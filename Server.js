@@ -1,5 +1,5 @@
 ﻿var Hapi = require('hapi');
-var server = new Hapi.Server(3000);
+var server = new Hapi.Server(3000, { cors: true });
 var http = require('http');
 var requests = require('request');
 var Joi = require('joi');
@@ -48,6 +48,24 @@ server.route({
     }
 });
 
+//http://localhost:3000/charity/30
+server.route({
+    method: 'GET',
+    path: '/charity/{catid}',
+    handler: function (request, reply) {
+        requests({ headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, url: 'https://api-sandbox.justgiving.com/{API Key}/v1/charity/search?categoryid=' + request.params.catid }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log("Category search by cat id called...");
+                reply(JSON.parse(body));
+            }
+            else {
+                console.log("Error with category search...");
+                reply("Error");
+            }
+        })
+    }
+});
+
 //http://localhost:3000/searchall/dog
 server.route({
     method: 'GET',
@@ -56,10 +74,13 @@ server.route({
         requests({ headers: { 'Accept': 'application/json','Content-Type': 'application/json' }, url: 'https://api-sandbox.justgiving.com/{API Key}/v1/onesearch?q=' + request.params.query }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 var foo = JSON.parse(body);
-                console.log("All search total records found: "+ foo.Total);
-                for (var index in foo.GroupedResults) {
-                    console.log(foo.GroupedResults[index].Title);
-                }
+                console.log("All search total records found: " + foo.Total);
+
+                //Example of looping through JSON array
+                //for (var index in foo.GroupedResults) {
+                //    console.log(foo.GroupedResults[index].Title);
+                //}
+
                 reply(JSON.parse(body));
             }
             else {
