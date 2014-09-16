@@ -35,14 +35,16 @@ server.route({
     method: 'GET',
     path: '/charity/categories',
     handler: function (request, reply) {
-        requests({ headers: { 'Accept': 'application/json','Content-Type': 'application/json' }, url: 'https://api-sandbox.justgiving.com/{API Key}/v1/charity/categories' }, function (error, response, body) {
+        requests({ headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, url: 'https://api-sandbox.justgiving.com/{API Key}/v1/charity/categories' }, function (error, response, body) {
+            console.log("Category search called...");
             if (!error && response.statusCode == 200) {
-                console.log("Category search called...");
                 reply(JSON.parse(body));
             }
             else {
-                console.log("Error with category search...");
-                reply("Error");
+                console.log(error);
+                reply({ "posts": [{ "title": "Post1" }, { "title": "Post2" }] });
+                //reply(Hapi.error.notFound('APIIssue'));
+        
             }
         })
     }
