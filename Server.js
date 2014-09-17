@@ -41,10 +41,7 @@ server.route({
                 reply(JSON.parse(body));
             }
             else {
-                console.log(error);
-                reply({ "posts": [{ "title": "Post1" }, { "title": "Post2" }] });
-                //reply(Hapi.error.notFound('APIIssue'));
-        
+                reply({"error":[{ "message": "error with API" }]}).code('504');        
             }
         })
     }
