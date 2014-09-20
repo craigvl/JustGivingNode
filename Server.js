@@ -41,6 +41,7 @@ server.route({
                 reply(JSON.parse(body));
             }
             else {
+                console.log('Error with Category search...')
                 reply({"error":[{ "message": "error with API" }]}).code('504');        
             }
         })
