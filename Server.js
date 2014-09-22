@@ -66,6 +66,25 @@ server.route({
     }
 });
 
+//http://localhost:3000/charitydetail/30
+server.route({
+    method: 'GET',
+    path: '/charitydetail/{id}',
+    handler: function (request, reply) {
+        console.log(request.params.id);
+        requests({ headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, url: 'https://api-sandbox.justgiving.com/{API Key}/v1/charity/' + request.params.id }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log("Charity detail by id called...");
+                reply(JSON.parse(body));
+            }
+            else {
+                console.log("Error with charity detail request...");
+                reply("Error");
+            }
+        })
+    }
+});
+
 //http://localhost:3000/searchall/dog
 server.route({
     method: 'GET',
