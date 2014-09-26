@@ -56,7 +56,8 @@ server.route({
         requests({ headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, url: 'https://api-sandbox.justgiving.com/{API Key}/v1/charity/search?categoryid=' + request.params.catid }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 console.log("Category search by cat id called...");
-                reply(JSON.parse(body));
+                var results = JSON.parse(body);
+                reply(results.charitySearchResults);
             }
             else {
                 console.log("Error with category search...");
