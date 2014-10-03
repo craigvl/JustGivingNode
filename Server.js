@@ -1,5 +1,5 @@
 ﻿var Hapi = require('hapi');
-var server = new Hapi.Server(3000, { cors: true });
+var server = new Hapi.Server(process.env.PORT || 3000, { cors: true });
 var http = require('http');
 var requests = require('request');
 var Joi = require('joi');
